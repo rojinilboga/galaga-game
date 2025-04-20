@@ -32,6 +32,43 @@ def on_key_down(key):
         bullet.x = galaga.x
         bullet.y = galaga.y -50
         bullets.append(bullet)
+
+def update():
+    global lives, score
+    #move the ship left or right
+    if keyboard.left:
+        galaga.x -=speed
+        if galaga.x <=0:
+            galaga.x =0
+    elif keyboard.right:
+        galaga.x +=speed
+        if galaga.x >=WIDTH:
+            galaga.x =WIDTH
+    
+    #move bullets
+    for bullet in bullets:
+        if bullet.y <=0:
+            bullets.remove(bullet)
+        else:
+            bullet.y -=10
+
+    #move bugs
+    for bug in bugs:
+        bug.y +=5
+        if bug.y > HEIGHT:
+            bug.x = random.randint(0,520)
+            bug.y= random.randint(-100,0)
+            
+
+    
+
+
+
+
+
+        
+
+
     
     
 
