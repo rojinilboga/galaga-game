@@ -23,8 +23,8 @@ for i in range(8):
     bugs.append(bug)
 
 def display_score():
-    screen.draw.text(f"score: {score}",(50,30))
-    screen.draw.text(f"lives: {lives}",(50,60))
+    screen.draw.text(f"score: {score}",(50,30),color = "black")
+    screen.draw.text(f"lives: {lives}",(50,60),color = "black")
 
 def on_key_down(key):
     if key == keys.SPACE:
@@ -58,6 +58,91 @@ def update():
         if bug.y > HEIGHT:
             bug.x = random.randint(0,520)
             bug.y= random.randint(-100,0)
+
+        #check for collision with bullets
+        for bullet in bullets:
+            if bug.colliderect(bullet):
+                sounds.sound.play()
+                score += 100
+                bullets.remove(bullet)
+                bugs.remove(bug)
+        
+        #check for collision with ship
+        if bug.colliderect(galaga):
+            lives -= 1 
+            bugs.remove(bug)
+            if lives == 0:
+                game_over()
+
+    #continuosly creating new enemies
+    if len(bugs) < 8:     
+        bug = Actor("bug")
+        bug.x = random.randint(0,520)
+        bug.y = random.randint(-100,0)
+        bugs.append(bug)
+
+
+#function to draw game state
+def draw():
+    if lives > 0:
+        screen.clear()
+        screen.fill("yellow")
+        for bullet in bullets:
+            bullet.draw()
+        for bug in bugs:
+            bug.draw()
+        galaga.draw()
+        display_score()
+    else:
+        game_over_screen()
+
+def game_over():
+    global is_game_over
+    is_game_over = True
+
+
+#function to draw game over screen
+def game_over_screen():
+    screen.clear()
+    screen.fill("yellow")
+    screen.draw.text("GAME OVER",(WIDTH // 2, HEIGHT// 2),fontsize=60, color="black")
+    screen.draw.text(f"final score: {score}",(WIDTH // 2, HEIGHT// 2),fontsize=60, color="black")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 
     
